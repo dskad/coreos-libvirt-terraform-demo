@@ -1,0 +1,20 @@
+[Unit]
+Description=Run QEMU guest agent container
+Wants = network-online.target
+After = network-online.target
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=-/bin/podman kill qemu-ga
+ExecStartPre=-/bin/podman rm qemu-ga
+ExecStartPre=/bin/podman pull docker.io/danskadra/qemu-ga
+ExecStart=/bin/podman run --name qemu-ga \
+  --privileged=true \
+  --net=host \
+  -v /dev:/dev \
+  -v /etc/os-release:/etc/os-release:ro  \
+  docker.io/danskadra/qemu-ga qemu-ga -v
+ExecStop=/bin/podman stop qemu-ga
+
+[Install]
+WantedBy=multi-user.target
