@@ -6,21 +6,19 @@ data "ignition_config" "k3s_ignition_config" {
   files = [
     data.ignition_file.hostname[count.index].rendered,
     data.ignition_file.silence_audit_messages.rendered,
-    # data.ignition_file.k3s_install_script.rendered
+    data.ignition_file.k3s_install_script.rendered
   ]
 
   systemd = [
     data.ignition_systemd_unit.qemu_ga.rendered,
-    # data.ignition_systemd_unit.k3s_install.rendered
+    data.ignition_systemd_unit.k3s_install.rendered
   ]
   count = var.node_count
 }
 
 data "ignition_user" "core" {
   name = "core"
-  ssh_authorized_keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB+rD+/IKmY8fM39IUsOKYxueGIxj2N+p9jPjSgX5RFd core"
-  ]
+  ssh_authorized_keys = var.ssh_authorized_keys
 }
 
 data "ignition_file" "hostname" {
