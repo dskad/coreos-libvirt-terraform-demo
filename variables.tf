@@ -56,6 +56,36 @@ variable "ssh_authorized_keys" {
 variable "unit_description" {
   type        = string
   description = "Description of the systemd unit"
-  default     = "Run QEMU guest agent container"
+  d41.4345935, -81.7458836efault     = "Run QEMU guest agent container"
 }
 
+variable "k3s_install_options" {
+  type = map(string)
+  description = "Install options to pass to k3s-install.sh"
+  default = {
+    "INSTALL_K3S_EXEC" = "server --cluster-init",
+    "INSTALL_K3S_CHANNEL" = "stable" # stable, latest, testing
+  }
+}
+
+# TODO The first server node initializes the cluster with --custer-init
+#       The subsusequent nodes join the cluster with K3S_URL set to the first node
+variable "k3s_server_options" {
+  type = map(string)
+  description = "Options for k3s in server mode"
+  default = {
+    "K3S_TOKEN" = "secret_cluster_token",
+    "K3S_SERVER_EXEC" = "--server",
+    "K3S_SERVER_CHANNEL" = "latest" # https://update.k3s.io/v1-release/channels
+  }
+}
+
+variable "k3s_agent_options" {
+  type = map(string)
+  description = "Options for k3s in agent mode"
+  default = {
+    "K3S_TOKEN" = "secret_cluster_token",
+    "K3S_SERVER_EXEC" = "--server",
+    "K3S_SERVER_CHANNEL" = "stable" # stable, latest, testing
+  }
+}

@@ -6,12 +6,13 @@ ConditionPathExists=/opt/k3s-install.sh
 ConditionPathExists=!/opt/bin/k3s
 
 [Service]
-Type=forking
+Type=oneshot
 TimeoutStartSec=0
 RemainAfterExit=yes
 KillMode=process
-Environment="K3S_TOKEN=secret_edgecluster_token"
-Environment="INSTALL_K3S_EXEC=--cluster-init"
+%{ for env_key, env_value in env_config ~}
+Environment="${env_key}=${env_value}"
+%{ endfor ~}
 ExecStart=/usr/bin/sh -c "/opt/k3s-install.sh"
 
 [Install]
