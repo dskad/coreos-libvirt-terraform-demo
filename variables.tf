@@ -56,7 +56,7 @@ variable "ssh_authorized_keys" {
 variable "unit_description" {
   type        = string
   description = "Description of the systemd unit"
-  d41.4345935, -81.7458836efault     = "Run QEMU guest agent container"
+  default     = "Run QEMU guest agent container"
 }
 
 variable "k3s_install_options" {
